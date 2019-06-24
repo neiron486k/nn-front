@@ -125,12 +125,17 @@ const Intro = ({ classes }: Props) => {
                         >
                             <div className={classes.containerWrapper}>
                                 <Container fixed>
-                                    <Slide direction={'up'} in={slide.id === index} timeout={1000}>
+                                    {/*<Slide direction={'up'} in={slide.id === index} timeout={1000}>*/}
+                                    {/*    <Typography variant={"body2"} color={"inherit"} align={"right"}>*/}
+                                    {/*        <FormatMessage id={item.description} />*/}
+                                    {/*    </Typography>*/}
+                                    {/*</Slide>*/}
+                                    <Slide direction={'left'} in={slide.id === index} timeout={1000}>
                                         <Typography variant={"h2"} color={"inherit"} className={classes.text} gutterBottom>
                                             <FormatMessage id={item.header} />
                                         </Typography>
                                     </Slide>
-                                    <Slide direction={'left'} in={slide.id === index} timeout={1000}>
+                                    <Slide direction={'down'} in={slide.id === index} timeout={1000}>
                                         <Typography variant={"body2"} color={"inherit"} >
                                             <FormatMessage id={item.description} />
                                         </Typography>
