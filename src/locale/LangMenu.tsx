@@ -10,21 +10,37 @@ import { setLocale } from "./localeOperation";
 import { connect } from "react-redux";
 
 const styles = (theme: Theme) => createStyles({
-    root: {
-        color: "#fff"
-    }
+    root: {},
+    button: {
+        color: 'rgba(255, 255, 255, .7)'
+    },
 });
 
 interface Props extends WithStyles<typeof styles> {
     className?: string,
     setLang: Function
+    lang: string
 }
 
-const LangMenu = ({ classes, className, setLang }: Props) => {
+const LangMenu = ({ classes, className, setLang, lang }: Props) => {
     return (
         <div className={classnames(classes.root, className)}>
-            <Button color={"inherit"} component={"span"} onClick={() =>setLang('en')}>English</Button>
-            <Button color={"inherit"} component={"span"} onClick={() =>setLang('ru')}>Русский</Button>
+            <Button
+                className={classes.button}
+                component={"span"}
+                onClick={() =>setLang('en')}
+                style={{color: lang === 'en' && '#fff' }}
+            >
+                English
+            </Button>
+            <Button
+                className={classes.button}
+                component={"span"}
+                onClick={() =>setLang('ru')}
+                style={{color: lang === 'ru' && '#fff' }}
+            >
+                Русский
+            </Button>
         </div>
     )
 };
