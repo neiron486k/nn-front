@@ -14,6 +14,7 @@ import development from './images/development.jpeg';
 import guarantee from './images/guarantee.jpeg';
 import administration from './images/administration.jpeg';
 import support from './images/support.jpeg';
+import LangMenu from "../../locale/LangMenu";
 
 const styles = (theme: Theme) => createStyles({
     slider: {
@@ -52,6 +53,14 @@ const styles = (theme: Theme) => createStyles({
     },
     selected: {
         color: '#fff !important'
+    },
+    lang: {
+        writingMode: 'vertical-rl',
+        textOrientation: 'mixed',
+        position: 'absolute',
+        right: 0,
+        top: theme.spacing(2),
+        zIndex: theme.zIndex.appBar + 1
     }
 });
 
@@ -149,6 +158,7 @@ const Intro = ({ classes }: Props) => {
                     })}
                 </BottomNavigation>
             </div>
+            <LangMenu className={classes.lang} />
         </div>
     )
 };
