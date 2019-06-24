@@ -15,6 +15,7 @@ import guarantee from './images/guarantee.jpeg';
 import administration from './images/administration.jpeg';
 import support from './images/support.jpeg';
 import LangMenu from "../../locale/LangMenu";
+import FormatMessage from "../../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
     slider: {
@@ -35,8 +36,9 @@ const styles = (theme: Theme) => createStyles({
         color: '#fff',
     },
     text: {
+        textTransform: 'uppercase',
         [theme.breakpoints.down('xs')]: {
-            fontSize: '3rem'
+            fontSize: '2rem'
         }
     },
     description: {},
@@ -71,30 +73,34 @@ const slides = [
     {
         id: 0,
         background: development,
-        text: 'Developing',
+        label: 'slider.development.label',
+        header: 'slider.development.header',
+        description: 'slider.development.description',
         icon: <DevelopIcon />,
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
     },
     {
         id: 1,
         background: administration,
-        text: 'Administration',
+        label: 'slider.administration.label',
+        header: 'slider.administration.header',
+        description: 'slider.administration.description',
         icon: <AdminstrationIcon />,
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     },
     {
         id: 2,
         background: support,
-        text: 'Consultation',
+        label: 'slider.consultation.label',
+        header: 'slider.consultation.header',
+        description: 'slider.consultation.description',
         icon: <SupportIcon />,
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     },
     {
         id: 3,
         background: guarantee,
-        text: 'Guarantee',
+        label: 'slider.guarantee.label',
+        header: 'slider.guarantee.header',
+        description: 'slider.guarantee.description',
         icon: <DoneIcon />,
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     },
 ];
 
@@ -121,12 +127,12 @@ const Intro = ({ classes }: Props) => {
                                 <Container fixed>
                                     <Slide direction={'up'} in={slide.id === index} timeout={1000}>
                                         <Typography variant={"h2"} color={"inherit"} className={classes.text} gutterBottom>
-                                            {item.text}
+                                            <FormatMessage id={item.header} />
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'left'} in={slide.id === index} timeout={1000}>
                                         <Typography variant={"body2"} color={"inherit"} >
-                                            {item.description}
+                                            <FormatMessage id={item.description} />
                                         </Typography>
                                     </Slide>
                                 </Container>
@@ -141,14 +147,14 @@ const Intro = ({ classes }: Props) => {
                     onChange={(event, newValue) => {
                         handleSlide(newValue);
                     }}
-                    showLabels
+                    showLabels={true}
                     className={classes.nav}
                 >
                     {slides.map((item, index) => {
                         return (
                             <BottomNavigationAction
                                 key={index}
-                                label={item.text}
+                                label={<FormatMessage id={item.label} />}
                                 className={classes.action}
                                 classes={{
                                     selected: classes.selected

@@ -28,16 +28,20 @@ const LangMenu = ({ classes, className, setLang, lang }: Props) => {
             <Button
                 className={classes.button}
                 component={"span"}
-                onClick={() =>setLang('en')}
-                style={{color: lang === 'en' && '#fff' }}
+                onClick={() => setLang('en')}
+                style={{ color: lang === 'en' && '#fff' }}
+                variant={"text"}
+                size={"small"}
             >
                 English
             </Button>
             <Button
                 className={classes.button}
                 component={"span"}
-                onClick={() =>setLang('ru')}
-                style={{color: lang === 'ru' && '#fff' }}
+                onClick={() => setLang('ru')}
+                style={{ color: lang === 'ru' && '#fff' }}
+                size={"small"}
+                variant={"text"}
             >
                 Русский
             </Button>
