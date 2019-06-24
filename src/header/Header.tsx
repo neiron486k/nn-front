@@ -4,10 +4,14 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
+import logo from './images/logo.png';
 
 const styles = (theme: Theme) => createStyles({
     root: {
         background: 'none'
+    },
+    title: {
+        textTransform: 'uppercase'
     }
 });
 
@@ -18,7 +22,8 @@ const Header = ({ classes }: Props) => {
     return (
         <AppBar position={"fixed"} elevation={0} className={classes.root}>
             <Toolbar>
-                <Typography variant="h6">
+                <img src={logo} alt="logo" width={50} />
+                <Typography variant="h6" className={classes.title}>
                     Neironet
                 </Typography>
             </Toolbar>

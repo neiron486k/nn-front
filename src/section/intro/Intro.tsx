@@ -30,12 +30,15 @@ const styles = (theme: Theme) => createStyles({
     containerWrapper: {
         height: '100%',
         display: 'flex',
-        alignItems: 'center'
-    },
-    typography: {
+        alignItems: 'center',
         color: '#fff',
-        // mixBlendMode: 'color-dodge'
     },
+    text: {
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '3rem'
+        }
+    },
+    description: {},
     footer: {
         position: 'absolute',
         width: '100%',
@@ -103,18 +106,17 @@ const Intro = ({ classes }: Props) => {
                             style={{
                                 opacity: slide.id === index ? 1 : 0,
                                 background: `linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.4)), url(${item.background}) center / cover no-repeat`
-                                // background: `url(${item.background}) center / cover no-repeat`
                             }}
                         >
                             <div className={classes.containerWrapper}>
                                 <Container fixed>
                                     <Slide direction={'up'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"h2"} className={classes.typography} gutterBottom>
+                                        <Typography variant={"h2"} color={"inherit"} className={classes.text} gutterBottom>
                                             {item.text}
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'left'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"body1"} className={classes.typography}>
+                                        <Typography variant={"body2"} color={"inherit"} >
                                             {item.description}
                                         </Typography>
                                     </Slide>

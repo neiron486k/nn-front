@@ -16,6 +16,16 @@ const theme: Theme = createMuiTheme({
             default: '#fff',
         },
     },
+    typography: {
+        fontFamily: [
+            'Play',
+            'Montserrat',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+        ].join(',')
+    }
 });
 
 export default theme;
