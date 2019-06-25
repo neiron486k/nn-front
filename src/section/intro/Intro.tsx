@@ -18,6 +18,7 @@ import FormatMessage from "../../locale/FormatMessage";
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 import RightPane from "../../pane/RightPane";
+import Particles from 'react-particles-js';
 
 const styles = (theme: Theme) => createStyles({
     slider: {
@@ -47,7 +48,8 @@ const styles = (theme: Theme) => createStyles({
     footer: {
         position: 'absolute',
         width: '100%',
-        bottom: 0
+        bottom: 0,
+        zIndex: theme.zIndex.appBar
     },
     nav: {
         background: 'none'
@@ -60,6 +62,12 @@ const styles = (theme: Theme) => createStyles({
         color: '#fff !important',
         fontSize: '1rem !important'
     },
+    particles: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: theme.zIndex.appBar - 1
+    }
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -101,14 +109,66 @@ const slides = [
     },
 ];
 
+const particles = {
+    "particles": {
+        "number": {
+            "value": 80,
+            "density": {
+                "enable": true,
+                "value_area": 800
+            }
+        },
+        "color": {
+            "value": "#fff"
+        },
+        "opacity": {
+            "value": 0.5,
+            "random": false,
+            "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+            }
+        },
+        "size": {
+            "value": 3,
+            "random": true,
+            "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#fff",
+            "opacity": 0.4,
+            "width": 1
+        },
+        "move": {
+            "enable": true,
+            "speed": 3,
+        }
+    }
+};
+
 const Intro = ({ classes, width }: Props) => {
     const [slide, setSlide] = useState(slides[0]);
     const handleSlide = (index: number) => {
         setSlide(slides[index]);
     };
 
+
+
     return (
         <div className={classes.slider}>
+            <Particles
+                className={classes.particles}
+                params={particles}
+            />
             {
                 slides.map((item, index) => {
                     return (
