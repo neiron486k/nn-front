@@ -18,8 +18,8 @@ export default {
 
         'slider.consultation.label': "Consultation",
         'slider.consultation.title': "Simple with us",
-        'slider.consultation.header': "Consultation",
-        'slider.consultation.description': "lorem ipsus with consultation some servers etc",
+        'slider.consultation.header': "Consultation and support",
+        'slider.consultation.description': "We are support existing projects, consultation you about storing data, what the devices or technologies do you need to choice and everything else on real time.",
 
         'slider.guarantee.label': "Guarantee",
         'slider.guarantee.title': "Your nerves is ok with us",
