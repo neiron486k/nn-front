@@ -54,9 +54,11 @@ const styles = (theme: Theme) => createStyles({
     },
     action: {
         color: 'rgba(255, 255, 255, .7)',
+        fontSize: '1rem'
     },
     selected: {
-        color: '#fff !important'
+        color: '#fff !important',
+        fontSize: '1rem !important'
     },
 });
 
@@ -153,7 +155,8 @@ const Intro = ({ classes, width }: Props) => {
                                 label={!isWidthDown('xs', width) && <FormatMessage id={item.label} />}
                                 className={classes.action}
                                 classes={{
-                                    selected: classes.selected
+                                    selected: classes.selected,
+                                    label: classes.action,
                                 }}
                                 icon={item.icon}
                             />
