@@ -53,7 +53,7 @@ const styles = (theme: Theme) => createStyles({
         background: 'none'
     },
     action: {
-        color: 'rgba(255, 255, 255, .7)'
+        color: 'rgba(255, 255, 255, .7)',
     },
     selected: {
         color: '#fff !important'
