@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Slide from '@material-ui/core/Slide';
-import { createStyles, Theme } from "@material-ui/core";
-import { withStyles, WithStyles } from '@material-ui/styles';
+import { Theme } from "@material-ui/core";
+import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -14,8 +14,10 @@ import development from './images/development.jpeg';
 import guarantee from './images/guarantee.jpeg';
 import administration from './images/administration.jpeg';
 import support from './images/support.jpeg';
-import LangMenu from "../../locale/LangMenu";
 import FormatMessage from "../../locale/FormatMessage";
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import RightPane from "../../pane/RightPane";
 
 const styles = (theme: Theme) => createStyles({
     slider: {
@@ -56,17 +58,10 @@ const styles = (theme: Theme) => createStyles({
     selected: {
         color: '#fff !important'
     },
-    lang: {
-        writingMode: 'vertical-rl',
-        textOrientation: 'mixed',
-        position: 'absolute',
-        right: 0,
-        top: theme.spacing(2),
-        zIndex: theme.zIndex.appBar + 1
-    }
 });
 
 interface Props extends WithStyles<typeof styles> {
+    width: Breakpoint
 }
 
 const slides = [
@@ -104,7 +99,7 @@ const slides = [
     },
 ];
 
-const Intro = ({ classes }: Props) => {
+const Intro = ({ classes, width }: Props) => {
     const [slide, setSlide] = useState(slides[0]);
     const handleSlide = (index: number) => {
         setSlide(slides[index]);
@@ -125,18 +120,14 @@ const Intro = ({ classes }: Props) => {
                         >
                             <div className={classes.containerWrapper}>
                                 <Container fixed>
-                                    {/*<Slide direction={'up'} in={slide.id === index} timeout={1000}>*/}
-                                    {/*    <Typography variant={"body2"} color={"inherit"} align={"right"}>*/}
-                                    {/*        <FormatMessage id={item.description} />*/}
-                                    {/*    </Typography>*/}
-                                    {/*</Slide>*/}
                                     <Slide direction={'left'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"h2"} color={"inherit"} className={classes.text} gutterBottom>
+                                        <Typography variant={"h2"} color={"inherit"} className={classes.text}
+                                                    gutterBottom>
                                             <FormatMessage id={item.header} />
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'down'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"body2"} color={"inherit"} >
+                                        <Typography variant={"body2"} color={"inherit"}>
                                             <FormatMessage id={item.description} />
                                         </Typography>
                                     </Slide>
@@ -152,26 +143,27 @@ const Intro = ({ classes }: Props) => {
                     onChange={(event, newValue) => {
                         handleSlide(newValue);
                     }}
-                    showLabels={true}
+                    showLabels
                     className={classes.nav}
                 >
                     {slides.map((item, index) => {
                         return (
                             <BottomNavigationAction
                                 key={index}
-                                label={<FormatMessage id={item.label} />}
+                                label={!isWidthDown('xs', width) && <FormatMessage id={item.label} />}
                                 className={classes.action}
                                 classes={{
                                     selected: classes.selected
                                 }}
-                                icon={item.icon} />
+                                icon={item.icon}
+                            />
                         )
                     })}
                 </BottomNavigation>
             </div>
-            <LangMenu className={classes.lang} />
+            <RightPane />
         </div>
     )
 };
 
-export default withStyles(styles)(Intro)
+export default withWidth()(withStyles(styles)(Intro))

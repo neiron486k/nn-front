@@ -6,12 +6,27 @@ const Dotenv = require('dotenv-webpack');
 module.exports = {
     mode: process.env.APP_ENV || 'development',
     entry: './src/index.tsx',
+    performance: {
+        hints: false,
+        maxEntrypointSize: 400000,
+        maxAssetSize: 100000,
+        assetFilter: function (assetFilename) {
+            return assetFilename.endsWith('.ts');
+        }
+    },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 include: path.resolve(__dirname, 'src'),
-                loader: "awesome-typescript-loader"
+                use: [
+                    {
+                        loader: 'cache-loader'
+                    },
+                    {
+                        loader: "awesome-typescript-loader"
+                    }
+                ]
             },
             {
                 test: /\.(png|jpe?g|gif|svg|webp)$/,
@@ -30,7 +45,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
+        extensions: ['.tsx', '.ts', '.js']
     },
     plugins: [
         new Dotenv({
