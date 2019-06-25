@@ -19,7 +19,6 @@ const theme: Theme = createMuiTheme({
     typography: {
         fontFamily: [
             'Play',
-            'Montserrat',
             'Roboto',
             '"Helvetica Neue"',
             'Arial',
