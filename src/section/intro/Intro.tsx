@@ -38,6 +38,9 @@ const styles = (theme: Theme) => createStyles({
             fontSize: '2rem'
         }
     },
+    title: {
+        textTransform: 'uppercase',
+    },
     description: {},
     footer: {
         position: 'absolute',
@@ -94,9 +97,9 @@ const Intro = ({ classes, width }: Props) => {
                             <div className={classes.containerWrapper}>
                                 <Container fixed>
                                     <Slide direction={'up'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"body2"} color={"inherit"} className={classes.text} align={"right"}
+                                        <Typography variant={"body2"} color={"inherit"} className={classes.title} align={"right"}
                                                     gutterBottom>
-                                            <FormatMessage id={item.description} />
+                                            <FormatMessage id={item.title} />
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'left'} in={slide.id === index} timeout={1000}>
