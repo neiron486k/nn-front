@@ -123,7 +123,7 @@ const particles = {
         },
         "opacity": {
             "value": 0.5,
-            "random": false,
+            "random": true,
             "anim": {
                 "enable": false,
                 "speed": 1,
