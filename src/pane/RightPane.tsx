@@ -10,15 +10,15 @@ const styles = (theme: Theme) => createStyles({
         textOrientation: 'mixed',
         position: 'absolute',
         right: 0,
-        top: theme.spacing(2),
-        bottom: theme.spacing(2),
+        top: theme.spacing(8),
+        bottom: theme.spacing(8),
         zIndex: theme.zIndex.appBar + 1,
         color: "#fff",
         display: 'flex',
     },
     lang: {
         flexGrow: 1
-    }
+    },
 });
 
 interface IProps extends WithStyles<typeof styles> {
