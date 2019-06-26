@@ -10,13 +10,32 @@ import { AppState } from "../app/reducer";
 import { connect } from "react-redux";
 import { menus } from './menu/HeaderMenu';
 import FormatMessage from "../locale/FormatMessage";
+import PhoneIcon from '@material-ui/icons/Phone'
+import EmailIcon from '@material-ui/icons/Email'
+import Button from "@material-ui/core/Button";
 
 const styles = (theme: Theme) => createStyles({
     root: {
         background: 'none'
     },
     title: {
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        flexGrow: 1
+    },
+    contact: {
+        display: 'flex',
+        alignItems: 'center',
+        '& svg': {
+            marginRight: theme.spacing()
+        }
+    },
+    a: {
+        textDecoration: 'none',
+        color: '#fff',
+        textTransform: 'lowercase'
+    },
+    icon: {
+        marginRight: theme.spacing(1)
     }
 });
 
@@ -33,6 +52,14 @@ const Header = ({ classes, section }: Props) => {
                 <Typography variant="h6" className={classes.title}>
                     Neironet - <FormatMessage id={menus.filter(item => item.id === section)[0]['label']} />
                 </Typography>
+                <Button color={"inherit"}>
+                    <PhoneIcon className={classes.icon} />
+                    <a href="tel:+79213594494" className={classes.a}>+7 (921) 3594494</a>
+                </Button>
+                <Button color={"inherit"}>
+                    <EmailIcon className={classes.icon} />
+                    <a href="mailto:efsneiron@gmail.com" className={classes.a}>efsneiron@gmail.com</a>
+                </Button>
             </Toolbar>
         </AppBar>
     )
