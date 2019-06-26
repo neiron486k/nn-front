@@ -7,11 +7,11 @@ import { IconButton } from "@material-ui/core";
 import { AppState } from "../../app/reducer";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { setSectionAction } from "../../pages/landing/landingAction";
 import { connect } from "react-redux";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { setLandingSection } from "../../pages/landing/landingOparation";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -45,7 +45,7 @@ const HeaderMenu = ({ classes, section, setSection }: Props) => {
 
                     {menus.map(item => {
                         return (
-                            <ListItem key={item.id} onClick={() => setSection(item.id)}>
+                            <ListItem key={item.id} onClick={() => setSection(item.id)} button={true}>
                                 <ListItemText primary={item.label}
                                               style={item.id === section ? { color: '#922' } : {}} />
                             </ListItem>
@@ -62,7 +62,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
-    setSection: (section: string) => dispatch(setSectionAction(section))
+    setSection: (section: string) => dispatch(setLandingSection(section))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HeaderMenu))

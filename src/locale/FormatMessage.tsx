@@ -15,7 +15,6 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 const FormatMessage = ({ id, lang }: IProps) => {
-    // @ts-ignore
     const message = messages[lang][id] || id;
 
     return (

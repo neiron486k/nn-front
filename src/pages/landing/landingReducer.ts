@@ -1,7 +1,8 @@
 import { ILandingSection, SET_SECTION } from "./landingAction";
+import { getLandingSection } from "./landingOparation";
 
 const InitState = {
-    section: 'intro'
+    section: getLandingSection()
 };
 
 interface ILandingState {
