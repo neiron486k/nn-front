@@ -33,9 +33,12 @@ const styles = (theme: Theme) => createStyles({
     },
     text: {
         textTransform: 'uppercase',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '3.5rem'
+        },
         [theme.breakpoints.down('xs')]: {
             fontSize: '2rem'
-        }
+        },
     },
     title: {
         textTransform: 'uppercase',

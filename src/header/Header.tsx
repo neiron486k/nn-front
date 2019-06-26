@@ -13,6 +13,8 @@ import FormatMessage from "../locale/FormatMessage";
 import PhoneIcon from '@material-ui/icons/Phone'
 import EmailIcon from '@material-ui/icons/Email'
 import Button from "@material-ui/core/Button";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -41,9 +43,10 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles> {
     section: string
+    width: Breakpoint
 }
 
-const Header = ({ classes, section }: Props) => {
+const Header = ({ classes, section, width }: Props) => {
     return (
         <AppBar position={"fixed"} elevation={0} className={classes.root}>
             <Toolbar>
@@ -52,14 +55,17 @@ const Header = ({ classes, section }: Props) => {
                 <Typography variant="h6" className={classes.title}>
                     Neironet - <FormatMessage id={menus.filter(item => item.id === section)[0]['label']} />
                 </Typography>
-                <Button color={"inherit"}>
-                    <PhoneIcon className={classes.icon} />
-                    <a href="tel:+79213594494" className={classes.a}>+7 (921) 3594494</a>
-                </Button>
-                <Button color={"inherit"}>
-                    <EmailIcon className={classes.icon} />
-                    <a href="mailto:efsneiron@gmail.com" className={classes.a}>efsneiron@gmail.com</a>
-                </Button>
+                {!isWidthDown('sm', width) && <div>
+                    <Button color={"inherit"}>
+                        <PhoneIcon className={classes.icon} />
+                        <a href="tel:+79213594494" className={classes.a}>+7 (921) 3594494</a>
+                    </Button>
+                    <Button color={"inherit"}>
+                        <EmailIcon className={classes.icon} />
+                        <a href="mailto:efsneiron@gmail.com" className={classes.a}>efsneiron@gmail.com</a>
+                    </Button>
+                </div>
+                }
             </Toolbar>
         </AppBar>
     )
@@ -69,4 +75,4 @@ const mapStateToProps = (state: AppState) => ({
     section: state.landing.section
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Header))
+export default connect(mapStateToProps)(withWidth()(withStyles(styles)(Header)))
