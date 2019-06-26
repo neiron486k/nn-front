@@ -102,12 +102,12 @@ const Intro = ({ classes, width }: Props) => {
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'left'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"h2"} color={"inherit"} className={classes.text} paragraph>
+                                        <Typography variant={"h1"} color={"inherit"} className={classes.text} paragraph>
                                             <FormatMessage id={item.header} />
                                         </Typography>
                                     </Slide>
                                     <Slide direction={'down'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"body2"} color={"inherit"}>
+                                        <Typography variant={"body1"} color={"inherit"}>
                                             <FormatMessage id={item.description} />
                                         </Typography>
                                     </Slide>
