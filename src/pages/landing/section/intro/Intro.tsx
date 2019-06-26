@@ -6,13 +6,12 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import FormatMessage from "../../locale/FormatMessage";
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
-import RightPane from "../../pane/RightPane";
 import Particles from 'react-particles-js';
 import slides from './slides';
 import particles from './particles'
+import FormatMessage from "../../../../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
     slider: {
@@ -142,7 +141,6 @@ const Intro = ({ classes, width }: Props) => {
                     })}
                 </BottomNavigation>
             </div>
-            <RightPane />
         </div>
     )
 };
