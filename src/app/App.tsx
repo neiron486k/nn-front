@@ -1,14 +1,16 @@
 import React from 'react'
-import { Theme } from "@material-ui/core";
+import { createStyles, Theme } from "@material-ui/core";
 import { withStyles, WithStyles } from '@material-ui/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Intro from "../section/intro/Intro";
 import Header from "../header/Header";
+import Feedback from "../feedback/Feedback";
 
-const styles = (theme: Theme) => ({
+const styles = (theme: Theme) => createStyles({
     root: {
         height: '100vh',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
     },
 });
 
@@ -26,6 +28,7 @@ const App = ({ classes }: Props) => {
             <div className={classes.root}>
                 <Header />
                 {sections[0]}
+                <Feedback />
             </div>
         </div>
     )

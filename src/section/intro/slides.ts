@@ -43,5 +43,5 @@ export default [
         header: 'slider.guarantee.header',
         description: 'slider.guarantee.description',
         icon: DoneIcon,
-    },
+    }
 ];

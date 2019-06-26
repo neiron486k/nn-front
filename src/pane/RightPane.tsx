@@ -3,6 +3,10 @@ import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/s
 import LangMenu from "../locale/LangMenu";
 import { Button } from "@material-ui/core";
 import FormatMessage from "../locale/FormatMessage";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { openFeedbackAction } from "../feedback/feedbackAction";
+import { connect } from "react-redux";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -22,17 +26,22 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface IProps extends WithStyles<typeof styles> {
+    openFeedback: Function
 }
 
-const RightPane = ({ classes }: IProps) => {
+const RightPane = ({ classes, openFeedback }: IProps) => {
     return (
         <div className={classes.root}>
             <LangMenu className={classes.lang} />
-            <Button color={"inherit"} component={"span"}>
+            <Button color={"inherit"} component={"span"} onClick={() => openFeedback()}>
                 <FormatMessage id={'feedback'} />
             </Button>
         </div>
     )
 };
 
-export default withStyles(styles)(RightPane)
+const mapDispatchToProps = (dispatch: ThunkDispatch<{},{}, AnyAction>) => ({
+    openFeedback: () => dispatch(openFeedbackAction(true))
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(RightPane))
