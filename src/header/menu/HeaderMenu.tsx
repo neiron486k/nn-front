@@ -12,6 +12,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { setLandingSection } from "../../pages/landing/landingOparation";
+import FormatMessage from "../../locale/FormatMessage";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -19,6 +20,9 @@ const styles = (theme: Theme) => createStyles({
         background: 'none',
         color: '#fff'
     },
+    paper: {
+        // background: 'rgba(255, 255, 255, .7)'
+    }
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -26,27 +30,29 @@ interface Props extends WithStyles<typeof styles> {
     setSection: Function
 }
 
-const menus = [
-    { id: 'intro', label: 'Intro' },
-    { id: 'work', label: 'Works' },
-    { id: 'contact', label: 'Contacts' }
+export const menus = [
+    { id: 'intro', label: 'menu.intro' },
+    { id: 'work', label: 'menu.work' },
+    { id: 'contact', label: 'menu.contact' }
 ];
 
 const HeaderMenu = ({ classes, section, setSection }: Props) => {
     const [open, setOpen] = useState(false);
+    const toggleDrawer = (): void => {
+        setOpen(!open)
+    };
 
     return (
         <div className={classes.root}>
-            <IconButton edge="start" color="inherit" aria-label="Menu" onClick={() => setOpen(true)}>
+            <IconButton edge="start" color="inherit" aria-label="Menu" onClick={toggleDrawer}>
                 <MenuIcon />
             </IconButton>
-            <Drawer open={open} onClose={() => setOpen(false)}>
-                <List>
-
+            <Drawer open={open} onClose={toggleDrawer} classes={{paper: classes.paper}}>
+                <List onClick={toggleDrawer}>
                     {menus.map(item => {
                         return (
                             <ListItem key={item.id} onClick={() => setSection(item.id)} button={true}>
-                                <ListItemText primary={item.label}
+                                <ListItemText primary={<FormatMessage id={item.label}/>}
                                               style={item.id === section ? { color: '#922' } : {}} />
                             </ListItem>
                         )

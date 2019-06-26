@@ -12,7 +12,7 @@ const styles = (theme: Theme) => createStyles({
     root: {
         writingMode: 'vertical-rl',
         textOrientation: 'mixed',
-        position: 'absolute',
+        position: 'fixed',
         right: 0,
         top: theme.spacing(8),
         bottom: theme.spacing(8),
