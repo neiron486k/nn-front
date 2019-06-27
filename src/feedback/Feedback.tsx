@@ -1,41 +1,56 @@
-import React from 'react';
-import { createStyles, Theme, WithStyles } from "@material-ui/core";
+import React, { useState } from 'react';
+import { Button, createStyles, Theme, WithStyles } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from '@material-ui/core/Drawer';
-import { AppState } from "../app/reducer";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import { openFeedbackAction } from "./feedbackAction";
-import { connect } from "react-redux";
+import FeedbackForm from './form/FeedbackForm';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from "@material-ui/core/Typography";
+import IconButton from '@material-ui/core/IconButton';
+import FormatMessage from "../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
-    drawer: {}
+    content: {
+        padding: theme.spacing(2),
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center'
+    }
 });
 
 interface IProps extends WithStyles<typeof styles> {
-    open: boolean,
-    closeFeedback: Function
 }
 
-const Feedback = ({ classes, open, closeFeedback }: IProps) => {
+const Feedback = ({ classes }: IProps) => {
+    const [open, setOpen] = useState(false);
+
+    const handleDrawer = (): void => {
+        setOpen(!open)
+    };
+
     return (
-        <Drawer
-            elevation={0}
-            open={open}
-            anchor={'right'}
-            onClose={() => closeFeedback()}
-        >
-            feedback form here
-        </Drawer>
+        <div>
+            <Button color={"inherit"} component={"span"} onClick={handleDrawer}>
+                <FormatMessage id={'feedback'} />
+            </Button>
+            <Drawer
+                elevation={0}
+                open={open}
+                anchor={'right'}
+                onClose={handleDrawer}
+            >
+                <div className={classes.content}>
+                    <div className={classes.header}>
+                        <Typography variant={"subtitle1"} style={{flexGrow: 1}}>Заказать звонок</Typography>
+                        <IconButton edge="end" onClick={handleDrawer}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                    <FeedbackForm />
+                </div>
+            </Drawer>
+        </div>
     )
 };
 
-const mapStateToProps = (state: AppState) => ({
-    open: state.feedback.open
-});
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<{},{}, AnyAction>) => ({
-    closeFeedback: () => dispatch(openFeedbackAction(false))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Feedback));
+export default withStyles(styles)(Feedback);
