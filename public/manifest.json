@@ -1,0 +1,16 @@
+{
+  "name": "Neironet",
+  "short_name": "Neironet",
+  "display": "standalone",
+  "description": "Passionate and patient group of professionals",
+  "start_url": ".",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ]
+}
