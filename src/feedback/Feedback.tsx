@@ -7,6 +7,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
 import IconButton from '@material-ui/core/IconButton';
 import FormatMessage from "../locale/FormatMessage";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { setMessageAction } from "./feedbackAction";
+import { connect } from "react-redux";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -23,13 +27,15 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface IProps extends WithStyles<typeof styles> {
+    setMessage: Function
 }
 
-const Feedback = ({ classes }: IProps) => {
+const Feedback = ({ classes, setMessage }: IProps) => {
     const [open, setOpen] = useState(false);
 
     const handleDrawer = (): void => {
-        setOpen(!open)
+        setOpen(!open);
+        setMessage('');
     };
 
     return (
@@ -55,4 +61,8 @@ const Feedback = ({ classes }: IProps) => {
     )
 };
 
-export default withStyles(styles)(Feedback);
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
+    setMessage: (message: string) => dispatch(setMessageAction(message))
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Feedback));
