@@ -9,12 +9,13 @@ import HeaderMenu from "./menu/HeaderMenu";
 import { AppState } from "../app/reducer";
 import { connect } from "react-redux";
 import { menus } from './menu/HeaderMenu';
-import FormatMessage from "../locale/FormatMessage";
+import FormatMessage, { formatMessage } from "../locale/FormatMessage";
 import PhoneIcon from '@material-ui/icons/Phone'
 import EmailIcon from '@material-ui/icons/Email'
 import Button from "@material-ui/core/Button";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import { Helmet } from "react-helmet";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -43,12 +44,20 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles> {
     section: string
-    width: Breakpoint
+    width: Breakpoint,
+    lang: string
 }
 
-const Header = ({ classes, section, width }: Props) => {
+const Header = ({ classes, section, width, lang }: Props) => {
     return (
         <AppBar position={"fixed"} elevation={0} className={classes.root}>
+            <Helmet
+                titleTemplate="NEIRONET - %s"
+            >
+                <title>{formatMessage('app.title', lang)}</title>
+                <meta property="og:title" content={formatMessage('app.title', lang)} />
+                <meta property="og:description" content={formatMessage('app.description', lang)} />
+            </Helmet>
             <Toolbar>
                 <HeaderMenu />
                 <img src={logo} alt="logo" width={50} />
@@ -72,7 +81,8 @@ const Header = ({ classes, section, width }: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    section: state.landing.section
+    section: state.landing.section,
+    lang: state.locale.lang
 });
 
 export default connect(mapStateToProps)(withWidth()(withStyles(styles)(Header)))

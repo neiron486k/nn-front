@@ -3,7 +3,7 @@ import { createStyles, Theme, WithStyles } from '@material-ui/core/styles'
 import withStyles from "@material-ui/core/styles/withStyles";
 import messages from './translations'
 import { AppState } from "../app/reducer";
-import { connect} from 'react-redux'
+import { connect, } from 'react-redux'
 
 const styles = (theme: Theme) => createStyles({
     root: {}
@@ -25,3 +25,7 @@ const FormatMessage = ({ id, lang }: IProps) => {
 const mapStateToProps = (state: AppState) => ({ lang: state.locale.lang });
 
 export default connect(mapStateToProps)(withStyles(styles)(FormatMessage));
+
+export const formatMessage = (id: string, lang: string): string => {
+    return messages[lang][id] || id;
+};

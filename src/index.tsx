@@ -12,7 +12,7 @@ import { AnyAction } from "redux";
 
 // get locale
 let lang = getLocale();
-(store.dispatch as ThunkDispatch<{}, {}, AnyAction>)(setLocale(lang) );
+(store.dispatch as ThunkDispatch<{}, {}, AnyAction>)(setLocale(lang));
 
 ReactDOM.render(
     <Provider store={store}>
