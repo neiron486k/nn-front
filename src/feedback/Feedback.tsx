@@ -60,10 +60,10 @@ const Feedback = ({ classes, setMessage }: IProps) => {
                     <CloseIcon />
                 </IconButton>
                 <div className={classes.content}>
-                    <Typography variant={"h6"} align={"center"}>Заказать звонок</Typography>
+                    <Typography variant={"h6"} align={"center"}><FormatMessage id={'feedback.orderCall'} /></Typography>
                     <FeedbackForm />
                 </div>
-                <Typography variant={"h6"} align={"center"}>Контакты</Typography>
+                <Typography variant={"h6"} align={"center"}><FormatMessage id={'feedback.contacts'} /></Typography>
                 <List>
                     <ListItemLink href={'tel:+79213594494'} className={classes.listItem}>
                         <ListItemAvatar>

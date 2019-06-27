@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import { AppState } from "../../app/reducer";
 import green from '@material-ui/core/colors/green';
+import FormatMessage from "../../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -75,7 +76,7 @@ const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
                     <Grid container alignItems={"center"}>
                         <Grid item xs={6}>
                             <Button color={"secondary"} variant={"contained"} type={"submit"} fullWidth>
-                                Send
+                                <FormatMessage id={'app.send'} />
                             </Button>
                         </Grid>
                         <Grid item xs={6}>
