@@ -74,7 +74,7 @@ const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
                 <Grid item xs={12} >
                     <Grid container alignItems={"center"}>
                         <Grid item xs={6}>
-                            <Button color={"primary"} variant={"contained"} type={"submit"} fullWidth>
+                            <Button color={"secondary"} variant={"contained"} type={"submit"} fullWidth>
                                 Send
                             </Button>
                         </Grid>

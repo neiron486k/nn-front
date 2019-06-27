@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Button, createStyles, Theme, WithStyles } from "@material-ui/core";
+import { Button, createStyles, ListItem, List, ListItemAvatar, Avatar, ListItemText, Theme, WithStyles } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from '@material-ui/core/Drawer';
 import FeedbackForm from './form/FeedbackForm';
-import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
 import IconButton from '@material-ui/core/IconButton';
 import FormatMessage from "../locale/FormatMessage";
@@ -11,6 +10,9 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { setMessageAction } from "./feedbackAction";
 import { connect } from "react-redux";
+import CloseIcon from '@material-ui/icons/Close';
+import PhoneIcon from '@material-ui/icons/Phone';
+import MailIcon from '@material-ui/icons/Email';
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -24,11 +26,16 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(3),
         maxWidth: 500
     },
+    listItem: {
+        color: theme.palette.common.black
+    }
 });
 
 interface IProps extends WithStyles<typeof styles> {
     setMessage: Function
 }
+
+const ListItemLink = (props: any) => <ListItem component="a" {...props} />;
 
 const Feedback = ({ classes, setMessage }: IProps) => {
     const [open, setOpen] = useState(false);
@@ -53,9 +60,28 @@ const Feedback = ({ classes, setMessage }: IProps) => {
                     <CloseIcon />
                 </IconButton>
                 <div className={classes.content}>
-                    <Typography variant={"subtitle1"} align={"center"}>Заказать звонок</Typography>
+                    <Typography variant={"h6"} align={"center"}>Заказать звонок</Typography>
                     <FeedbackForm />
                 </div>
+                <Typography variant={"h6"} align={"center"}>Контакты</Typography>
+                <List>
+                    <ListItemLink href={'tel:+79213594494'} className={classes.listItem}>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <PhoneIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="+7 (921) 3594494" />
+                    </ListItemLink>
+                    <ListItemLink href={'mailto:efsneiron@gmail.com'} className={classes.listItem}>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <MailIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="efsneiron@gmail.com"/>
+                    </ListItemLink>
+                </List>
             </Drawer>
         </div>
     )
