@@ -43,7 +43,7 @@ const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
                 <Grid item xs={12} sm={6}>
                     <Field
                         name="name"
-                        label={'Name'}
+                        label={<FormatMessage id={'feedback.label.name'} />}
                         component={renderTextField}
                         fullWidth={true}
                         required={true}
@@ -53,7 +53,7 @@ const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
                 <Grid item xs={12} sm={6}>
                     <Field
                         name="phone"
-                        label={'Phone'}
+                        label={<FormatMessage id={'feedback.label.phone'} />}
                         component={renderTextField}
                         fullWidth={true}
                         required={true}
@@ -63,7 +63,7 @@ const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
                 <Grid item xs={12}>
                     <Field
                         name="content"
-                        label={'Content'}
+                        label={<FormatMessage id={'feedback.label.content'} />}
                         component={renderTextField}
                         fullWidth={true}
                         required={true}
