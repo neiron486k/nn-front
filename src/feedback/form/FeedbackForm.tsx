@@ -9,27 +9,33 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { sendFeedback } from "../feedbackOperation";
 import { connect } from "react-redux";
+import Typography from "@material-ui/core/Typography";
+import { AppState } from "../../app/reducer";
+import green from '@material-ui/core/colors/green';
 
 const styles = (theme: Theme) => createStyles({
     root: {
         width: '100%',
     },
+    message: {
+        color: green[500]
+    }
 });
 
 interface IProps extends WithStyles<typeof styles>, InjectedFormProps {
-    // handleSubmit: SubmitHandler
     onSubmit: SubmitHandler
+    message: string
 }
 
 export interface IFeedbackForm {
     name: string,
     phone: string,
-    description: string
+    content: string
 }
 
 export const FEEDBACK_FORM = 'feedbackForm';
 
-const Form = ({ classes, handleSubmit, onSubmit }: IProps) => {
+const Form = ({ classes, handleSubmit, onSubmit, message }: IProps) => {
     return (
         <form className={classes.root} noValidate={true} autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
@@ -55,8 +61,8 @@ const Form = ({ classes, handleSubmit, onSubmit }: IProps) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Field
-                        name="description"
-                        label={'Description'}
+                        name="content"
+                        label={'Content'}
                         component={renderTextField}
                         fullWidth={true}
                         required={true}
@@ -65,10 +71,19 @@ const Form = ({ classes, handleSubmit, onSubmit }: IProps) => {
                         margin={"normal"}
                     />
                 </Grid>
-                <Grid item xs={12} style={{textAlign: 'right'}}>
-                    <Button color={"primary"} variant={"contained"} type={"submit"} >
-                        Send
-                    </Button>
+                <Grid item xs={12} >
+                    <Grid container alignItems={"center"}>
+                        <Grid item xs={6}>
+                            <Button color={"primary"} variant={"contained"} type={"submit"} fullWidth>
+                                Send
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography align={"right"} className={classes.message}>{message}</Typography>
+                        </Grid>
+                    </Grid>
+
+
                 </Grid>
             </Grid>
 
@@ -80,8 +95,12 @@ const FeedbackForm = reduxForm({
     form: FEEDBACK_FORM
 })(withStyles(styles)(Form));
 
+const mapStateToProps = (state: AppState) => ({
+    message: state.feedback.message
+})
+
 const mapDispatchToProps = (dispatch: ThunkDispatch<{},{}, AnyAction>) => ({
     onSubmit: (values: IFeedbackForm) => dispatch(sendFeedback(values))
 });
 
-export default connect(null, mapDispatchToProps)(FeedbackForm);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackForm);
