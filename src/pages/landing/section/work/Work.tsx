@@ -60,16 +60,15 @@ const Work = ({ classes, works, getData, lang }: IProps) => {
         getData();
     }, [lang]);
 
-
     return (
         <div className={classes.root}>
             <Grid container style={{ height: '100%' }}>
                 {works.map((item, index) => {
                     const style = {
-                        background: `linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(${item.cover}) center / cover no-repeat`,
-                        '&:hover': {
-                            background: `linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url(${item.cover}) center / cover no-repeat`,
-                        }
+                        background: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(${item.cover}) center / cover no-repeat`,
+                        // '&:hover': {
+                        //     color: '#922'
+                        // }
                     };
 
                     if (i >= k) {
