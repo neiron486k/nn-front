@@ -33,7 +33,7 @@ interface Props extends WithStyles<typeof styles> {
 export const menus = [
     { id: 'intro', label: 'menu.intro' },
     { id: 'work', label: 'menu.work' },
-    { id: 'contact', label: 'menu.contact' }
+    // { id: 'contact', label: 'menu.contact' }
 ];
 
 const HeaderMenu = ({ classes, section, setSection }: Props) => {

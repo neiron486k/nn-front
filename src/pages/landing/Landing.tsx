@@ -41,9 +41,6 @@ const Landing = ({ classes, section, location, setSection }: IProps) => {
             <Section id={"work"}>
                 <Work />
             </Section>
-            <Section id={"contact"}>
-                <Contact />
-            </Section>
         </div>
     )
 };
