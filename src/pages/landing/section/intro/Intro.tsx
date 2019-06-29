@@ -78,26 +78,59 @@ const Intro = ({ classes, width }: Props) => {
     const handleSlide = (index: number) => {
         setSlide(slides[index]);
     };
-
-    const handleKeys: KeyboardEventHandler = event => {
-        const key = event.key;
+    const swipe = (action: 'left' | 'right') => {
         let index = slides.indexOf(slide);
 
-        if (key === 'ArrowRight') {
-            index += 1;
-        }
-
-        if (key === 'ArrowLeft') {
-            index -= 1;
+        if (action === 'left') {
+            index -= 1
+        } else {
+            index += 1
         }
 
         if (slides[index] !== undefined) {
             setSlide(slides[index])
         }
-    }
+
+    };
+    const handleKeys: KeyboardEventHandler = event => {
+        const key = event.key;
+
+        if (key === 'ArrowRight') {
+            swipe('right')
+        }
+
+        if (key === 'ArrowLeft') {
+            swipe('left')
+        }
+    };
+
+    let startX = 0;
+    let startY = 0;
+
+    const touchStart = (event: any) => {
+        const touches = event.changedTouches[0];
+        startX = touches.pageX;
+        startY = touches.pageY;
+    };
+
+
+    const touchEnd = (event: any) => {
+        const touches = event.changedTouches[0];
+        const diffX = startX - touches.pageX;
+        const diffY = startY - touches.pageY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 0) {
+                swipe('right')
+            } else {
+                swipe('left')
+            }
+        }
+    };
 
     return (
-        <div className={classes.slider} onKeyDown={handleKeys} tabIndex={0}>
+        <div className={classes.slider} onKeyDown={handleKeys} tabIndex={0} onTouchStart={touchStart}
+             onTouchEnd={touchEnd}>
             <Particles
                 className={classes.particles}
                 params={particles}
