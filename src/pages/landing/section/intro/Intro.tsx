@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { KeyboardEventHandler, useState } from 'react'
 import Slide from '@material-ui/core/Slide';
 import { Theme } from "@material-ui/core";
 import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
@@ -79,8 +79,25 @@ const Intro = ({ classes, width }: Props) => {
         setSlide(slides[index]);
     };
 
+    const handleKeys: KeyboardEventHandler = event => {
+        const key = event.key;
+        let index = slides.indexOf(slide);
+
+        if (key === 'ArrowRight') {
+            index += 1;
+        }
+
+        if (key === 'ArrowLeft') {
+            index -= 1;
+        }
+
+        if (slides[index] !== undefined) {
+            setSlide(slides[index])
+        }
+    }
+
     return (
-        <div className={classes.slider}>
+        <div className={classes.slider} onKeyDown={handleKeys} tabIndex={0}>
             <Particles
                 className={classes.particles}
                 params={particles}
@@ -99,7 +116,8 @@ const Intro = ({ classes, width }: Props) => {
                             <div className={classes.containerWrapper}>
                                 <Container fixed>
                                     <Slide direction={'up'} in={slide.id === index} timeout={1000}>
-                                        <Typography variant={"body2"} color={"inherit"} className={classes.title} align={"right"} paragraph>
+                                        <Typography variant={"body2"} color={"inherit"} className={classes.title}
+                                                    align={"right"} paragraph>
                                             <FormatMessage id={item.title} />
                                         </Typography>
                                     </Slide>
