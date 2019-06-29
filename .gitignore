@@ -1,7 +1,8 @@
 ## Boiler
 build
 node_modules
-.env
+!.env
+.env.*
 
 ## IDE
 .idea
