@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "build": "webpack --env.APP_ENV=production",
-    "start": "webpack-dev-server --env.APP_ENV=development",
+    "start": "webpack-dev-server --env.APP_ENV=development --open",
     "start_prod": "webpack-dev-server --env.APP_ENV=production",
     "watch": "webpack --watch"
   },
