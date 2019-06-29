@@ -9,7 +9,7 @@ export default {
             "Move to HTTPS. " +
             "Design and arrangement data centers. " +
             "Configuration and administration servers and networks. " +
-            "Installation servers and SKS.",
+            "Installation servers and twisted-pairs.",
 
         'slider.development.label': "Development",
         'slider.development.title': "Passionate developers",
