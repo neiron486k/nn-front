@@ -104,8 +104,10 @@ module.exports = env => {
             port: 9000,
             host: '0.0.0.0',
             noInfo: true,
+            historyApiFallback: true,
         },
         output: {
+            publicPath: '/',
             path: path.resolve(__dirname, 'build'),
             filename: 'bundle.[contenthash].js'
         },

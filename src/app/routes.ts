@@ -12,5 +12,6 @@ export default [
         path: "/articles/:slug",
         component: Article,
         exact: true,
-    },
+        private: false
+    }
 ];

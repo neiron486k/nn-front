@@ -20,10 +20,12 @@ export const getArticles = async (type?: string): Promise<IArticle[]> => {
         url = url + '?type=' + type
     }
 
-    return await axios.get(url)
+    const response = await axios.get(url);
+    return response.data;
 };
 
 export const getArticle = async (slug: string): Promise<IArticle> => {
     let url = '/articles/' + slug;
-    return await axios.get(url)
+    const response = await axios.get(url);
+    return await response.data
 };

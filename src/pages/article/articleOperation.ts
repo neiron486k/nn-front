@@ -3,9 +3,14 @@ import { AnyAction } from "redux";
 import {getArticle as fetchArticle} from "../../api/article";
 import { setArticleAction } from "./articleAction";
 
-const getArticle = (slug: string) => {
+export const getArticle = (slug: string) => {
     return async (dispatch: ThunkDispatch<{},{}, AnyAction>) => {
-        const response = await fetchArticle(slug);
-        dispatch(setArticleAction(response.data))
+        try {
+            const response = await fetchArticle(slug);
+            dispatch(setArticleAction(response))
+        } catch (e) {
+            // @todo implement logic here
+            console.log('article not found')
+        }
     }
-};
+}
