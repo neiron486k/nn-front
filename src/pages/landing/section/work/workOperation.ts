@@ -5,7 +5,11 @@ import { setWorksAction } from "./workAction";
 
 export const getWorks = () => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-        const response = await getArticles('work');
-        dispatch(setWorksAction(response.data));
+        try {
+            const response = await getArticles('work');
+            dispatch(setWorksAction(response));
+        } catch (e) {
+            console.log('articles not found')
+        }
     }
 };

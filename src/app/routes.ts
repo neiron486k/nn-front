@@ -1,4 +1,5 @@
 import Landing from "../pages/landing/Landing";
+import Article from "../pages/article/Article";
 
 export default [
     {
@@ -7,4 +8,10 @@ export default [
         exact: true,
         private: false
     },
+    {
+        path: "/articles/:slug",
+        component: Article,
+        exact: true,
+        private: false
+    }
 ];

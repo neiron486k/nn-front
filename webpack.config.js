@@ -91,10 +91,10 @@ module.exports = env => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, 'public', 'index.html'),
+                favicon: path.resolve(__dirname, 'public', 'favicon.png'),
             }),
             new CopyPlugin([
                 { from: 'public/manifest.json', to: '.' },
-                { from: 'public/favicon.png', to: '.' },
             ]),
         ],
         devtool: 'inline-source-map',
@@ -104,8 +104,10 @@ module.exports = env => {
             port: 9000,
             host: '0.0.0.0',
             noInfo: true,
+            historyApiFallback: true,
         },
         output: {
+            publicPath: '/',
             path: path.resolve(__dirname, 'build'),
             filename: 'bundle.[contenthash].js'
         },
