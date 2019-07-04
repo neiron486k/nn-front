@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Section from "./section/Section";
 import Intro from "./section/intro/Intro";
 import Work from "./section/work/Work";
-import Contact from "./section/contact/Contact";
 import { scroller } from 'react-scroll';
 import { AppState } from "../../app/reducer";
 import { connect } from "react-redux";
@@ -12,6 +11,8 @@ import { withRouter } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { setLandingSection } from "./landingOparation";
+import Header from "../../header/Header";
+import RightPane from "../../pane/RightPane";
 
 const styles = createStyles({
     root: {}
@@ -35,6 +36,8 @@ const Landing = ({ classes, section, location, setSection }: IProps) => {
 
     return (
         <div className={classes.root}>
+            <Header />
+            <RightPane />
             <Section id={"intro"}>
                 <Intro />
             </Section>
