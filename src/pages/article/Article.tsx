@@ -7,9 +7,17 @@ import { getArticle } from "./articleOperation";
 import { connect } from "react-redux";
 import { IArticle } from "../../api/article";
 import { match } from "react-router";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 
 const styles = (theme: Theme) => createStyles({
-    root: {}
+    root: {
+        height: '100vh'
+    },
+    container: {
+        padding: theme.spacing(2)
+    }
 });
 
 interface ArticleParams {
@@ -28,7 +36,24 @@ const Article = ({ classes, match, article, fetchActicle }: IProps) => {
     }, [fetchActicle]);
 
     return (
-        <div>{article.title}</div>
+        <div className={classes.root}>
+            <Grid container style={{height: '100%'}}>
+                <Grid
+                    item
+                    sm={4}
+                    style={{background: `url(${article.cover}) center / cover no-repeat`}}
+                >
+                </Grid>
+                <Grid item sm={8}>
+                    <Container fixed className={classes.container}>
+                        <Typography variant={"h6"} align={"center"}>
+                            {article.title}
+                        </Typography>
+                        <Typography dangerouslySetInnerHTML={{__html: article.content}} />
+                    </Container>
+                </Grid>
+            </Grid>
+        </div>
     )
 };
 
