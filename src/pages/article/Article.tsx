@@ -13,10 +13,15 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        height: '100vh'
+        height: '100vh',
+        overflow: 'hidden'
+    },
+    gridContent: {
+        height: '100%',
+        overflow: 'auto'
     },
     container: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
     }
 });
 
@@ -41,10 +46,16 @@ const Article = ({ classes, match, article, fetchActicle }: IProps) => {
                 <Grid
                     item
                     sm={4}
+                    xs={12}
                     style={{background: `url(${article.cover}) center / cover no-repeat`}}
                 >
                 </Grid>
-                <Grid item sm={8}>
+                <Grid
+                    item
+                    sm={8}
+                    xs={12}
+                    className={classes.gridContent}
+                >
                     <Container fixed className={classes.container}>
                         <Typography variant={"h6"} align={"center"}>
                             {article.title}

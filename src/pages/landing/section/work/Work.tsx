@@ -8,6 +8,8 @@ import { AnyAction } from "redux";
 import { getWorks } from "./workOperation";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+import { Link, LinkProps } from "react-router-dom";
+import { IArticle } from "../../../../api/article";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -31,23 +33,16 @@ const styles = (theme: Theme) => createStyles({
     }
 });
 
-export interface IWork {
-    id: number
-    cover: string
-    title: string
-    description: string
-    content: string
-    type: {
-        id: number
-        code: string
-    }
-}
-
 interface IProps extends WithStyles<typeof styles> {
-    works: IWork[],
+    works: IArticle[],
     getData: Function
     lang: string
 }
+
+
+const ButtonLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+    <Link innerRef={ref as any} {...props} />
+));
 
 const Work = ({ classes, works, getData, lang }: IProps) => {
     const size = 3;
@@ -66,9 +61,6 @@ const Work = ({ classes, works, getData, lang }: IProps) => {
                 {works.map((item, index) => {
                     const style = {
                         background: `linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(${item.cover}) center / cover no-repeat`,
-                        // '&:hover': {
-                        //     color: '#922'
-                        // }
                     };
 
                     if (i >= k) {
@@ -89,7 +81,7 @@ const Work = ({ classes, works, getData, lang }: IProps) => {
                             className={classes.item}
                         >
                             <div className={classes.work} style={style}>
-                                <Button variant="outlined" color={"inherit"}>
+                                <Button variant="outlined" color={"inherit"} component={ButtonLink} to={"/articles/" + item.slug}>
                                     {item.title}
                                 </Button>
                             </div>

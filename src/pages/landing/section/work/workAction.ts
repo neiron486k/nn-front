@@ -1,10 +1,10 @@
-import { IWork } from "./Work";
+import { IArticle } from "../../../../api/article";
 
 export const SET_WORKS = 'SET_WORKS';
 
 export interface IWorkAction {
     type: typeof SET_WORKS
-    works: IWork[]
+    works: IArticle[]
 }
 
-export const setWorksAction = (works: IWork[]): IWorkAction => ({ type: SET_WORKS, works });
+export const setWorksAction = (works: IArticle[]): IWorkAction => ({ type: SET_WORKS, works });

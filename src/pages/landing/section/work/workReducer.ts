@@ -1,12 +1,12 @@
 import { IWorkAction, SET_WORKS } from "./workAction";
-import { IWork } from "./Work";
+import { IArticle } from "../../../../api/article";
 
 export interface IWorkState {
-    works: IWork[]
+    works: IArticle[]
 }
 
 const initState = {
-    works: [] as IWork[]
+    works: [] as IArticle[]
 };
 
 const workReducer = (state:IWorkState = initState, action: IWorkAction): IWorkState => {
