@@ -16,9 +16,17 @@ const styles = (theme: Theme) => createStyles({
         height: '100vh',
         overflow: 'hidden'
     },
+    gridCover: {
+        [theme.breakpoints.down('xs')]: {
+            height: '20%'
+        }
+    },
     gridContent: {
         height: '100%',
-        overflow: 'auto'
+        overflow: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            height: '80%'
+        }
     },
     container: {
         padding: theme.spacing(2),
@@ -48,6 +56,7 @@ const Article = ({ classes, match, article, fetchActicle }: IProps) => {
                     sm={4}
                     xs={12}
                     style={{background: `url(${article.cover}) center / cover no-repeat`}}
+                    className={classes.gridCover}
                 >
                 </Grid>
                 <Grid
