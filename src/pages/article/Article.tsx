@@ -12,6 +12,8 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
 import Slide from "@material-ui/core/Slide";
+import LangMenu from "../../locale/LangMenu";
+import { bool } from "prop-types";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -33,6 +35,10 @@ const styles = (theme: Theme) => createStyles({
     cover: {
         height: '100%'
     },
+    lang: {
+        background: 'rgba(0,0,0,.4)',
+        display: 'inline-block'
+    },
     container: {
         padding: theme.spacing(2),
         overflow: 'hidden'
@@ -46,16 +52,17 @@ interface ArticleParams {
 interface IProps extends WithStyles<typeof styles> {
     match: match<ArticleParams>
     fetchActicle: Function
-    article: IArticle
+    article: IArticle,
+    lang: string
 }
 
-const Article = ({ classes, match, article, fetchActicle }: IProps) => {
+const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
     const [title, setTitle] = useState(false);
     const [cover, setCover] = useState(false);
 
     useEffect(() => {
         fetchActicle(match.params.slug);
-    }, [fetchActicle]);
+    }, [fetchActicle, lang]);
 
     return (
         <div className={classes.root}>
@@ -75,7 +82,9 @@ const Article = ({ classes, match, article, fetchActicle }: IProps) => {
                         <div
                             className={classes.cover}
                             style={{background: `url(${article.cover}) center / cover no-repeat`}}
-                        />
+                        >
+                            <LangMenu className={classes.lang} />
+                        </div>
                     </Slide>
                 </Grid>
                 <Grid
@@ -106,7 +115,8 @@ const Article = ({ classes, match, article, fetchActicle }: IProps) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    article: state.article.article
+    article: state.article.article,
+    lang: state.locale.lang
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
