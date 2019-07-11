@@ -4,13 +4,13 @@ import { IArticleAction, SET_ARTICLE, SET_ARTICLES, START_FETCH_ARTICLE } from "
 export interface IArticleState {
     article?: IArticle
     articles?: IArticle[]
-    loadingArticle: boolean
+    articleLoaded: boolean
 }
 
 const initState = {
     article: {} as IArticle,
     articles: [] as IArticle[],
-    loadingArticle: false
+    articleLoaded: false
 };
 
 const articleReducer = (state: IArticleState = initState, action: IArticleAction): IArticleState => {
@@ -18,13 +18,13 @@ const articleReducer = (state: IArticleState = initState, action: IArticleAction
         case START_FETCH_ARTICLE:
             return {
                 ...state,
-                loadingArticle: true
+                articleLoaded: false
             };
         case SET_ARTICLE:
             return {
                 ...state,
                 article: action.article,
-                loadingArticle: false
+                articleLoaded: true
             };
         case SET_ARTICLES:
             return {

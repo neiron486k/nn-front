@@ -12,14 +12,20 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import LangMenu from "../../locale/LangMenu";
-import { ButtonLink } from "../landing/section/work/Work";
-import { setArticleAction } from "./articleAction";
 import sleep from "../../utils/sleep";
+import { setArticleAction } from "./articleAction";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme: Theme) => createStyles({
     root: {
         height: '100vh',
         overflow: 'hidden'
+    },
+    loader: {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     gridCover: {
         // position: 'relative',
@@ -63,104 +69,99 @@ interface IProps extends WithStyles<typeof styles> {
     article: IArticle,
     articles: IArticle[]
     lang: string,
-    history: any
+    history: any,
+    articleLoaded: boolean
 }
 
-const Article = ({ classes, match, article, articles, fetchArticle, fetchArticles, lang, setArticle, history }: IProps) => {
+const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang, match, history, setArticle, articleLoaded }: IProps) => {
     const timeout = 800;
     const [open, setOpen] = useState(true);
 
     useEffect(() => {
         fetchArticle(match.params.slug);
-    }, [fetchArticle, lang, match.params.slug]);
+    }, [fetchArticle, lang]);
 
     useEffect(() => {
         fetchArticles();
     }, [fetchArticles]);
 
     const getIndex = (article: IArticle): number => {
-        const index = articles.findIndex(item => item.id === article.id);
-        return index;
+        return articles.findIndex(item => item.id === article.id);
     };
 
-    const prev = async () => {
+    const list = async (action: 'prev' | 'next') => {
         const index = getIndex(article);
-        const targetArticle = articles[index - 1];
+        const pos = action === 'prev' ? -1 : 1;
+        const targetArticle = articles[index + pos];
 
         if (targetArticle) {
             setOpen(false);
             await sleep(timeout);
-            setArticle(targetArticle);
-            setOpen(true);
-            history.push('/articles/' + targetArticle.slug)
-        }
-    };
+            fetchArticle(targetArticle.slug);
 
-    const next = async () => {
-        const index = getIndex(article);
-        const targetArticle = articles[index + 1];
-
-        if (targetArticle) {
-            setOpen(false);
-            await sleep(timeout);
-            setArticle(targetArticle);
-            setOpen(true);
-            history.push('/articles/' + targetArticle.slug)
+            if (articleLoaded) {
+                history.push('/articles/' + targetArticle.slug);
+                setOpen(true);
+            }
         }
     };
 
     return (
         <div className={classes.root}>
-            <Grid container style={{ height: '100%' }}>
-                <Grid
-                    item
-                    sm={4}
-                    xs={12}
-                    className={classes.gridCover}
-                >
-                    <Slide
-                        in={open}
-                        direction={"right"}
-                        timeout={timeout}
+            {!articleLoaded ? <div className={classes.loader}>
+                    <CircularProgress />
+            </div> :
+                <Grid container style={{ height: '100%' }}>
+                    <Grid
+                        item
+                        sm={4}
+                        xs={12}
+                        className={classes.gridCover}
                     >
-                        <div
-                            className={classes.cover}
-                            style={{ background: `url(${article.cover}) center / cover no-repeat` }}
-                        >
-                            <nav className={classes.nav}>
-                                <LangMenu className={classes.lang} />
-                                <Button color={"inherit"} onClick={prev}>prev</Button>
-                                <Button color={"inherit"} onClick={next}>next</Button>
-                            </nav>
-                        </div>
-                    </Slide>
-                </Grid>
-                <Grid
-                    item
-                    sm={8}
-                    xs={12}
-                    className={classes.gridContent}
-                >
-                    <Container fixed className={classes.container}>
-                        <Slide
-                            direction={"left"}
-                            timeout={timeout}
-                            in={open}
-                        >
-                            <Typography variant={"h6"} align={"center"}>
-                                {article.title}
-                            </Typography>
-                        </Slide>
                         <Slide
                             in={open}
-                            direction={"up"}
+                            direction={"right"}
                             timeout={timeout}
                         >
-                            <Typography dangerouslySetInnerHTML={{ __html: article.content }} />
+                            <div
+                                className={classes.cover}
+                                style={{ background: `url(${article.cover}) center / cover no-repeat` }}
+                            >
+                                <nav className={classes.nav}>
+                                    <LangMenu className={classes.lang} />
+                                    <Button color={"inherit"} onClick={() => list("prev")}>prev</Button>
+                                    <Button color={"inherit"} onClick={() => list("next")}>next</Button>
+                                </nav>
+                            </div>
                         </Slide>
-                    </Container>
+                    </Grid>
+                    <Grid
+                        item
+                        sm={8}
+                        xs={12}
+                        className={classes.gridContent}
+                    >
+                        <Container fixed className={classes.container}>
+                            <Slide
+                                direction={"left"}
+                                timeout={timeout}
+                                in={open}
+                            >
+                                <Typography variant={"h6"} align={"center"}>
+                                    {article.title}
+                                </Typography>
+                            </Slide>
+                            <Slide
+                                in={open}
+                                direction={"up"}
+                                timeout={timeout}
+                            >
+                                <Typography dangerouslySetInnerHTML={{ __html: article.content }} />
+                            </Slide>
+                        </Container>
+                    </Grid>
                 </Grid>
-            </Grid>
+            }
         </div>
     )
 };
@@ -168,7 +169,7 @@ const Article = ({ classes, match, article, articles, fetchArticle, fetchArticle
 const mapStateToProps = (state: AppState) => ({
     article: state.article.article,
     articles: state.article.articles,
-    loadingArticle: state.article.loadingArticle,
+    articleLoaded: state.article.articleLoaded,
     lang: state.locale.lang,
 });
 
