@@ -31,7 +31,6 @@ const LangMenu = ({ classes, className, setLang, lang }: Props) => {
                 onClick={() => setLang('en')}
                 style={{ color: lang === 'en' && '#fff' }}
                 variant={"text"}
-                size={"small"}
             >
                 English
             </Button>
@@ -40,7 +39,6 @@ const LangMenu = ({ classes, className, setLang, lang }: Props) => {
                 component={"span"}
                 onClick={() => setLang('ru')}
                 style={{ color: lang === 'ru' && '#fff' }}
-                size={"small"}
                 variant={"text"}
             >
                 Русский

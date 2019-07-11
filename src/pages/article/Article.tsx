@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
+import { Button, createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
 import { AppState } from "../../app/reducer";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { getArticle } from "./articleOperation";
+import { getArticle, getArticles } from "./articleOperation";
 import { connect } from "react-redux";
 import { IArticle } from "../../api/article";
-import { match } from "react-router";
+import { match, withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Fade from "@material-ui/core/Fade";
 import Slide from "@material-ui/core/Slide";
 import LangMenu from "../../locale/LangMenu";
-import { bool } from "prop-types";
+import { ButtonLink } from "../landing/section/work/Work";
+import { setArticleAction } from "./articleAction";
+import sleep from "../../utils/sleep";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -21,6 +22,7 @@ const styles = (theme: Theme) => createStyles({
         overflow: 'hidden'
     },
     gridCover: {
+        // position: 'relative',
         [theme.breakpoints.down('xs')]: {
             height: '20%'
         }
@@ -35,14 +37,18 @@ const styles = (theme: Theme) => createStyles({
     cover: {
         height: '100%'
     },
+    nav: {
+        color: '#fff',
+        display: 'flex',
+        background: 'rgba(0,0,0,.5)'
+    },
     lang: {
-        background: 'rgba(0,0,0,.4)',
-        display: 'inline-block'
+        flexGrow: 1
     },
     container: {
         padding: theme.spacing(2),
         overflow: 'hidden'
-    }
+    },
 });
 
 interface ArticleParams {
@@ -51,22 +57,61 @@ interface ArticleParams {
 
 interface IProps extends WithStyles<typeof styles> {
     match: match<ArticleParams>
-    fetchActicle: Function
+    fetchArticle: Function
+    fetchArticles: Function
+    setArticle: Function
     article: IArticle,
-    lang: string
+    articles: IArticle[]
+    lang: string,
+    history: any
 }
 
-const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
-    const [title, setTitle] = useState(false);
-    const [cover, setCover] = useState(false);
+const Article = ({ classes, match, article, articles, fetchArticle, fetchArticles, lang, setArticle, history }: IProps) => {
+    const timeout = 800;
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
-        fetchActicle(match.params.slug);
-    }, [fetchActicle, lang]);
+        fetchArticle(match.params.slug);
+    }, [fetchArticle, lang, match.params.slug]);
+
+    useEffect(() => {
+        fetchArticles();
+    }, [fetchArticles]);
+
+    const getIndex = (article: IArticle): number => {
+        const index = articles.findIndex(item => item.id === article.id);
+        return index;
+    };
+
+    const prev = async () => {
+        const index = getIndex(article);
+        const targetArticle = articles[index - 1];
+
+        if (targetArticle) {
+            setOpen(false);
+            await sleep(timeout);
+            setArticle(targetArticle);
+            setOpen(true);
+            history.push('/articles/' + targetArticle.slug)
+        }
+    };
+
+    const next = async () => {
+        const index = getIndex(article);
+        const targetArticle = articles[index + 1];
+
+        if (targetArticle) {
+            setOpen(false);
+            await sleep(timeout);
+            setArticle(targetArticle);
+            setOpen(true);
+            history.push('/articles/' + targetArticle.slug)
+        }
+    };
 
     return (
         <div className={classes.root}>
-            <Grid container style={{height: '100%'}}>
+            <Grid container style={{ height: '100%' }}>
                 <Grid
                     item
                     sm={4}
@@ -74,16 +119,19 @@ const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
                     className={classes.gridCover}
                 >
                     <Slide
-                        in={article.cover !== undefined}
+                        in={open}
                         direction={"right"}
-                        timeout={400}
-                        onEntered={() => setCover(true)}
+                        timeout={timeout}
                     >
                         <div
                             className={classes.cover}
-                            style={{background: `url(${article.cover}) center / cover no-repeat`}}
+                            style={{ background: `url(${article.cover}) center / cover no-repeat` }}
                         >
-                            <LangMenu className={classes.lang} />
+                            <nav className={classes.nav}>
+                                <LangMenu className={classes.lang} />
+                                <Button color={"inherit"} onClick={prev}>prev</Button>
+                                <Button color={"inherit"} onClick={next}>next</Button>
+                            </nav>
                         </div>
                     </Slide>
                 </Grid>
@@ -96,16 +144,19 @@ const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
                     <Container fixed className={classes.container}>
                         <Slide
                             direction={"left"}
-                            in={article.title !== undefined && cover}
-                            timeout={400}
-                            onEntered={() => setTitle(true)}
+                            timeout={timeout}
+                            in={open}
                         >
                             <Typography variant={"h6"} align={"center"}>
                                 {article.title}
                             </Typography>
                         </Slide>
-                        <Slide in={article.content !== undefined && title} direction={"up"} timeout={400}>
-                            <Typography dangerouslySetInnerHTML={{__html: article.content}} />
+                        <Slide
+                            in={open}
+                            direction={"up"}
+                            timeout={timeout}
+                        >
+                            <Typography dangerouslySetInnerHTML={{ __html: article.content }} />
                         </Slide>
                     </Container>
                 </Grid>
@@ -116,11 +167,15 @@ const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
 
 const mapStateToProps = (state: AppState) => ({
     article: state.article.article,
-    lang: state.locale.lang
+    articles: state.article.articles,
+    loadingArticle: state.article.loadingArticle,
+    lang: state.locale.lang,
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
-    fetchActicle: (slug: string) => dispatch(getArticle(slug))
+    fetchArticle: (slug: string) => dispatch(getArticle(slug)),
+    fetchArticles: () => dispatch(getArticles()),
+    setArticle: (article: IArticle) => dispatch(setArticleAction(article))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Article))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter<any>(Article)))
