@@ -15,6 +15,7 @@ import LangMenu from "../../locale/LangMenu";
 import sleep from "../../utils/sleep";
 import { setArticleAction } from "./articleAction";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormatMessage from "../../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -109,7 +110,7 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
         <div className={classes.root}>
             {!articleLoaded ? <div className={classes.loader}>
                     <CircularProgress />
-            </div> :
+                </div> :
                 <Grid container style={{ height: '100%' }}>
                     <Grid
                         item
@@ -128,8 +129,8 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                             >
                                 <nav className={classes.nav}>
                                     <LangMenu className={classes.lang} />
-                                    <Button color={"inherit"} onClick={() => list("prev")}>prev</Button>
-                                    <Button color={"inherit"} onClick={() => list("next")}>next</Button>
+                                    <Button color={"inherit"} onClick={() => list("prev")}><FormatMessage id={'prev'} /></Button>
+                                    <Button color={"inherit"} onClick={() => list("next")}><FormatMessage id={'next'} /></Button>
                                 </nav>
                             </div>
                         </Slide>
