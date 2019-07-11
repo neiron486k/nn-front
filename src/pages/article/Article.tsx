@@ -16,6 +16,7 @@ import sleep from "../../utils/sleep";
 import { setArticleAction } from "./articleAction";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormatMessage from "../../locale/FormatMessage";
+import actions from "redux-form/lib/actions";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -56,6 +57,9 @@ const styles = (theme: Theme) => createStyles({
         padding: theme.spacing(2),
         overflow: 'hidden'
     },
+    disabled: {
+        color: 'rgba(204, 204, 204, .3) !important'
+    }
 });
 
 interface ArticleParams {
@@ -129,8 +133,26 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                             >
                                 <nav className={classes.nav}>
                                     <LangMenu className={classes.lang} />
-                                    <Button color={"inherit"} onClick={() => list("prev")}><FormatMessage id={'prev'} /></Button>
-                                    <Button color={"inherit"} onClick={() => list("next")}><FormatMessage id={'next'} /></Button>
+                                    <Button
+                                        color={"inherit"}
+                                        onClick={() => list("prev")}
+                                        disabled={articles[getIndex(article) - 1] === undefined}
+                                        classes={{
+                                            disabled: classes.disabled
+                                        }}
+                                    >
+                                        <FormatMessage id={'prev'} />
+                                    </Button>
+                                    <Button
+                                        color={"inherit"}
+                                        onClick={() => list("next")}
+                                        disabled={articles[getIndex(article) + 1] === undefined}
+                                        classes={{
+                                            disabled: classes.disabled
+                                        }}
+                                    >
+                                        <FormatMessage id={'next'} />
+                                    </Button>
                                 </nav>
                             </div>
                         </Slide>
