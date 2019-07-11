@@ -65,7 +65,6 @@ interface IProps extends WithStyles<typeof styles> {
     match: match<ArticleParams>
     fetchArticle: Function
     fetchArticles: Function
-    setArticle: Function
     article: IArticle,
     articles: IArticle[]
     lang: string,
@@ -73,7 +72,7 @@ interface IProps extends WithStyles<typeof styles> {
     articleLoaded: boolean
 }
 
-const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang, match, history, setArticle, articleLoaded }: IProps) => {
+const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang, match, history, articleLoaded }: IProps) => {
     const timeout = 800;
     const [open, setOpen] = useState(true);
 
@@ -176,7 +175,6 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
     fetchArticle: (slug: string) => dispatch(getArticle(slug)),
     fetchArticles: () => dispatch(getArticles()),
-    setArticle: (article: IArticle) => dispatch(setArticleAction(article))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter<any>(Article)))
