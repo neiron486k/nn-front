@@ -40,7 +40,7 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 
-const ButtonLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+export const ButtonLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
     <Link innerRef={ref as any} {...props} />
 ));
 

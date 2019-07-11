@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
+import { Button, createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
 import { AppState } from "../../app/reducer";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { getArticle } from "./articleOperation";
+import { getArticle, getArticles } from "./articleOperation";
 import { connect } from "react-redux";
 import { IArticle } from "../../api/article";
-import { match } from "react-router";
+import { match, withRouter } from "react-router";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Fade from "@material-ui/core/Fade";
 import Slide from "@material-ui/core/Slide";
 import LangMenu from "../../locale/LangMenu";
-import { bool } from "prop-types";
+import sleep from "../../utils/sleep";
+import { setArticleAction } from "./articleAction";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormatMessage from "../../locale/FormatMessage";
+import actions from "redux-form/lib/actions";
 
 const styles = (theme: Theme) => createStyles({
     root: {
         height: '100vh',
         overflow: 'hidden'
     },
+    loader: {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     gridCover: {
+        // position: 'relative',
         [theme.breakpoints.down('xs')]: {
             height: '20%'
         }
@@ -35,13 +45,20 @@ const styles = (theme: Theme) => createStyles({
     cover: {
         height: '100%'
     },
+    nav: {
+        color: '#fff',
+        display: 'flex',
+        background: 'rgba(0,0,0,.5)'
+    },
     lang: {
-        background: 'rgba(0,0,0,.4)',
-        display: 'inline-block'
+        flexGrow: 1
     },
     container: {
         padding: theme.spacing(2),
         overflow: 'hidden'
+    },
+    disabled: {
+        color: 'rgba(204, 204, 204, .3) !important'
     }
 });
 
@@ -51,76 +68,136 @@ interface ArticleParams {
 
 interface IProps extends WithStyles<typeof styles> {
     match: match<ArticleParams>
-    fetchActicle: Function
+    fetchArticle: Function
+    fetchArticles: Function
     article: IArticle,
-    lang: string
+    articles: IArticle[]
+    lang: string,
+    history: any,
+    articleLoaded: boolean
 }
 
-const Article = ({ classes, match, article, fetchActicle, lang }: IProps) => {
-    const [title, setTitle] = useState(false);
-    const [cover, setCover] = useState(false);
+const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang, match, history, articleLoaded }: IProps) => {
+    const timeout = 800;
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
-        fetchActicle(match.params.slug);
-    }, [fetchActicle, lang]);
+        fetchArticle(match.params.slug);
+    }, [fetchArticle, lang]);
+
+    useEffect(() => {
+        fetchArticles();
+    }, [fetchArticles]);
+
+    const getIndex = (article: IArticle): number => {
+        return articles.findIndex(item => item.id === article.id);
+    };
+
+    const list = async (action: 'prev' | 'next') => {
+        const index = getIndex(article);
+        const pos = action === 'prev' ? -1 : 1;
+        const targetArticle = articles[index + pos];
+
+        if (targetArticle) {
+            setOpen(false);
+            await sleep(timeout);
+            fetchArticle(targetArticle.slug);
+
+            if (articleLoaded) {
+                history.push('/articles/' + targetArticle.slug);
+                setOpen(true);
+            }
+        }
+    };
 
     return (
         <div className={classes.root}>
-            <Grid container style={{height: '100%'}}>
-                <Grid
-                    item
-                    sm={4}
-                    xs={12}
-                    className={classes.gridCover}
-                >
-                    <Slide
-                        in={article.cover !== undefined}
-                        direction={"right"}
-                        timeout={400}
-                        onEntered={() => setCover(true)}
+            {!articleLoaded ? <div className={classes.loader}>
+                    <CircularProgress />
+                </div> :
+                <Grid container style={{ height: '100%' }}>
+                    <Grid
+                        item
+                        sm={4}
+                        xs={12}
+                        className={classes.gridCover}
                     >
-                        <div
-                            className={classes.cover}
-                            style={{background: `url(${article.cover}) center / cover no-repeat`}}
-                        >
-                            <LangMenu className={classes.lang} />
-                        </div>
-                    </Slide>
-                </Grid>
-                <Grid
-                    item
-                    sm={8}
-                    xs={12}
-                    className={classes.gridContent}
-                >
-                    <Container fixed className={classes.container}>
                         <Slide
-                            direction={"left"}
-                            in={article.title !== undefined && cover}
-                            timeout={400}
-                            onEntered={() => setTitle(true)}
+                            in={open}
+                            direction={"right"}
+                            timeout={timeout}
                         >
-                            <Typography variant={"h6"} align={"center"}>
-                                {article.title}
-                            </Typography>
+                            <div
+                                className={classes.cover}
+                                style={{ background: `url(${article.cover}) center / cover no-repeat` }}
+                            >
+                                <nav className={classes.nav}>
+                                    <LangMenu className={classes.lang} />
+                                    <Button
+                                        color={"inherit"}
+                                        onClick={() => list("prev")}
+                                        disabled={articles[getIndex(article) - 1] === undefined}
+                                        classes={{
+                                            disabled: classes.disabled
+                                        }}
+                                    >
+                                        <FormatMessage id={'prev'} />
+                                    </Button>
+                                    <Button
+                                        color={"inherit"}
+                                        onClick={() => list("next")}
+                                        disabled={articles[getIndex(article) + 1] === undefined}
+                                        classes={{
+                                            disabled: classes.disabled
+                                        }}
+                                    >
+                                        <FormatMessage id={'next'} />
+                                    </Button>
+                                </nav>
+                            </div>
                         </Slide>
-                        <Slide in={article.content !== undefined && title} direction={"up"} timeout={400}>
-                            <Typography dangerouslySetInnerHTML={{__html: article.content}} />
-                        </Slide>
-                    </Container>
+                    </Grid>
+                    <Grid
+                        item
+                        sm={8}
+                        xs={12}
+                        className={classes.gridContent}
+                    >
+                        <Container fixed className={classes.container}>
+                            <Slide
+                                direction={"left"}
+                                timeout={timeout}
+                                in={open}
+                            >
+                                <Typography variant={"h6"} align={"center"}>
+                                    {article.title}
+                                </Typography>
+                            </Slide>
+                            <Slide
+                                in={open}
+                                direction={"up"}
+                                timeout={timeout}
+                            >
+                                <Typography dangerouslySetInnerHTML={{ __html: article.content }} />
+                            </Slide>
+                        </Container>
+                    </Grid>
                 </Grid>
-            </Grid>
+            }
         </div>
     )
 };
 
 const mapStateToProps = (state: AppState) => ({
     article: state.article.article,
-    lang: state.locale.lang
+    articles: state.article.articles,
+    articleLoaded: state.article.articleLoaded,
+    lang: state.locale.lang,
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
-    fetchActicle: (slug: string) => dispatch(getArticle(slug))
+    fetchArticle: (slug: string) => dispatch(getArticle(slug)),
+    fetchArticles: () => dispatch(getArticles()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Article))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter<any>(Article)))
