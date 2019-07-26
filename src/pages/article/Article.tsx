@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Button, createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
-import { AppState } from "../../app/reducer";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import { getArticle, getArticles } from "./articleOperation";
-import { connect } from "react-redux";
-import { IArticle } from "../../api/article";
-import { match, withRouter } from "react-router";
+import React, {useEffect, useState} from 'react';
+import {Button, createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {AppState} from "../../app/reducer";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {getArticle, getArticles} from "./articleOperation";
+import {connect} from "react-redux";
+import {IArticle} from "../../api/article";
+import {match, withRouter} from "react-router";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import LangMenu from "../../locale/LangMenu";
 import sleep from "../../utils/sleep";
-import { setArticleAction } from "./articleAction";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormatMessage from "../../locale/FormatMessage";
-import actions from "redux-form/lib/actions";
+import ToStart from "../../pane/ToStart";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -43,7 +42,8 @@ const styles = (theme: Theme) => createStyles({
         }
     },
     cover: {
-        height: '100%'
+        height: '100%',
+        position: 'relative'
     },
     nav: {
         color: '#fff',
@@ -59,6 +59,13 @@ const styles = (theme: Theme) => createStyles({
     },
     disabled: {
         color: 'rgba(204, 204, 204, .3) !important'
+    },
+    toStart: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        background: 'rgba(0,0,0,.5)',
+        color: '#fff'
     }
 });
 
@@ -77,7 +84,7 @@ interface IProps extends WithStyles<typeof styles> {
     articleLoaded: boolean
 }
 
-const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang, match, history, articleLoaded }: IProps) => {
+const Article = ({classes, article, articles, fetchArticle, fetchArticles, lang, match, history, articleLoaded}: IProps) => {
     const timeout = 800;
     const [open, setOpen] = useState(true);
 
@@ -113,9 +120,9 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
     return (
         <div className={classes.root}>
             {!articleLoaded ? <div className={classes.loader}>
-                    <CircularProgress />
+                    <CircularProgress/>
                 </div> :
-                <Grid container style={{ height: '100%' }}>
+                <Grid container style={{height: '100%'}}>
                     <Grid
                         item
                         sm={4}
@@ -129,10 +136,10 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                         >
                             <div
                                 className={classes.cover}
-                                style={{ background: `url(${article.cover}) center / cover no-repeat` }}
+                                style={{background: `url(${article.cover}) center / cover no-repeat`}}
                             >
                                 <nav className={classes.nav}>
-                                    <LangMenu className={classes.lang} />
+                                    <LangMenu className={classes.lang}/>
                                     <Button
                                         color={"inherit"}
                                         onClick={() => list("prev")}
@@ -141,7 +148,7 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                                             disabled: classes.disabled
                                         }}
                                     >
-                                        <FormatMessage id={'prev'} />
+                                        <FormatMessage id={'prev'}/>
                                     </Button>
                                     <Button
                                         color={"inherit"}
@@ -151,9 +158,12 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                                             disabled: classes.disabled
                                         }}
                                     >
-                                        <FormatMessage id={'next'} />
+                                        <FormatMessage id={'next'}/>
                                     </Button>
                                 </nav>
+                                <div className={classes.toStart}>
+                                    <ToStart />
+                                </div>
                             </div>
                         </Slide>
                     </Grid>
@@ -178,7 +188,7 @@ const Article = ({ classes, article, articles, fetchArticle, fetchArticles, lang
                                 direction={"up"}
                                 timeout={timeout}
                             >
-                                <Typography dangerouslySetInnerHTML={{ __html: article.content }} />
+                                <Typography dangerouslySetInnerHTML={{__html: article.content}}/>
                             </Slide>
                         </Container>
                     </Grid>
