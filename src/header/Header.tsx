@@ -55,7 +55,9 @@ const Header = ({ classes, section, width, lang }: Props) => {
                 titleTemplate="NEIRONET - %s"
             >
                 <title>{formatMessage('app.title', lang)}</title>
-                <meta property="og:title" content={formatMessage('app.title', lang)} />
+                <meta name="description" content={formatMessage('app.description', lang)} />
+                <meta name="keywords" content={formatMessage('app.title', lang)} />
+                <meta property="og:title" content={formatMessage('app.description', lang)} />
                 <meta property="og:description" content={formatMessage('app.description', lang)} />
             </Helmet>
             <Toolbar>
