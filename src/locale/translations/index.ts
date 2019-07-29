@@ -11,7 +11,8 @@ export default {
         'app.description': 'We are working with physical and legal persons',
         'app.send': 'Send',
         'prev': 'Prev',
-        'next': 'Next'
+        'next': 'Next',
+        'to_start': 'To start'
 
 
     },
@@ -23,6 +24,7 @@ export default {
         'app.description': 'Работаем с физическими и юридическими лицами',
         'app.send': 'Отправить',
         'prev': 'Назад',
-        'next': 'Вперед'
+        'next': 'Вперед',
+        'to_start': 'В начало'
     }
 }

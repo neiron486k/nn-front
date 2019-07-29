@@ -3,6 +3,7 @@ import {createStyles, Theme, withStyles, WithStyles} from '@material-ui/core/sty
 import {Link, LinkProps} from 'react-router-dom';
 import {Button} from "@material-ui/core";
 import classnames from "classnames"
+import FormatMessage from "../locale/FormatMessage";
 
 const styles = (theme: Theme) => createStyles({
     root: {},
@@ -24,7 +25,7 @@ const ToStart = ({classes, className}: IProps) => {
             className={classnames(classes.root, className)}
             color={"inherit"}
         >
-            To Start
+            <FormatMessage id={'to_start'} />
         </Button>
     )
 };
