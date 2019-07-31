@@ -95,6 +95,7 @@ module.exports = env => {
             }),
             new CopyPlugin([
                 { from: 'public/manifest.json', to: '.' },
+                { from: 'public/robots.txt', to: '.' },
             ]),
         ],
         devtool: 'inline-source-map',
